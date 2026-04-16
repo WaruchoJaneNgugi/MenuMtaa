@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react'
 import './App.css'
 const WA_LINK = 'https://wa.me/254791847766?text=Hi%2C%20I%20want%20my%20menu%20website'
 
+function getMailto(pkg: 'Starter' | 'Pro') {
+  const subject = `MenuMtaa ${pkg} Package Inquiry`
+  const body = pkg === 'Starter'
+    ? `Hi,\n\nI'm interested in the MenuMtaa Starter Package:\n\n- Menu website\n- WhatsApp booking\n- 1 design\n- Price: KES 7,000 – 9,000\n\nBusiness Name:\nBusiness Type (Salon/Restaurant/Café):\nPhone Number:\n\nThank you!`
+    : `Hi,\n\nI'm interested in the MenuMtaa Pro Package:\n\n- Everything in Starter\n- QR code system\n- Order selection system\n- Price: KES 10,000 – 15,000\n\nBusiness Name:\nBusiness Type (Salon/Restaurant/Café):\nPhone Number:\n\nThank you!`
+  return `mailto:waruchojanen@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
+
 function useReveal() {
   useEffect(() => {
     const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right')
@@ -156,7 +164,7 @@ export default function App() {
               <li>1 design</li>
             </ul>
             <div className="price-tag">KES 7,000 – 9,000</div>
-            <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary full">Get Started</a>
+            <a href={getMailto('Starter')} className="btn-primary full">✉️ Get Started</a>
           </div>
           <div className="price-card featured reveal">
             <div className="badge">Most Popular</div>
@@ -167,7 +175,7 @@ export default function App() {
               <li>Order selection system</li>
             </ul>
             <div className="price-tag">KES 10,000 – 15,000</div>
-            <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary full">Get Started</a>
+            <a href={getMailto('Pro')} className="btn-primary full">✉️ Get Started</a>
           </div>
         </div>
       </section>
