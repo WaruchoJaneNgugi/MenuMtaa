@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-
 const WA_LINK = 'https://wa.me/254791847766?text=Hi%2C%20I%20want%20my%20menu%20website'
 
 export default function App() {
