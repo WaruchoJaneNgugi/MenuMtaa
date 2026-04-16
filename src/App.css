@@ -115,31 +115,9 @@ nav {
 .sub { font-size: 18px; color: var(--text); margin-bottom: 36px; line-height: 1.6; }
 .cta-row { display: flex; gap: 16px; flex-wrap: wrap; }
 
-/* phone mockup */
-.phone-mockup { flex-shrink: 0; }
-.phone {
-  width: 240px;
-  background: var(--card);
-  border-radius: 28px;
-  border: 2px solid var(--border);
-  padding: 20px 16px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-  transition: background 0.2s;
-}
-.phone-screen { display: flex; flex-direction: column; gap: 10px; }
-.mock-header { font-weight: 700; color: var(--text-h); font-size: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-.mock-item { display: flex; justify-content: space-between; font-size: 13px; color: var(--text); padding: 6px 0; border-bottom: 1px solid var(--border); }
-.mock-wa-btn {
-  margin-top: 8px;
-  background: #25d366;
-  color: #fff;
-  font-weight: 700;
-  font-size: 13px;
-  text-align: center;
-  padding: 10px;
-  border-radius: 50px;
-  display: block;
-}
+/* hero image */
+.hero-img-wrap { flex-shrink: 0; width: 520px; }
+.hero-img { width: 100%; border-radius: 20px; box-shadow: 0 30px 80px rgba(0,0,0,0.6); display: block; }
 
 /* ── PROBLEM / SOLUTION ── */
 .problem-solution {
@@ -280,7 +258,7 @@ footer {
 @media (max-width: 768px) {
   nav { padding: 16px 20px; }
   .hero { flex-direction: column; padding: 48px 20px; gap: 40px; }
-  .phone-mockup { width: 100%; display: flex; justify-content: center; }
+  .hero-img-wrap { width: 100%; }
   .problem-solution { flex-direction: column; padding: 40px 20px; }
   .arrow { transform: rotate(90deg); }
   .how { padding: 40px 20px; }

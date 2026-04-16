@@ -34,16 +34,8 @@ export default function App() {
             <a href="#demos" className="btn-ghost">See Demo ↓</a>
           </div>
         </div>
-        <div className="phone-mockup">
-          <div className="phone">
-            <div className="phone-screen">
-              <div className="mock-header">💇🏾‍♀️ Glam Studio</div>
-              <div className="mock-item"><span>Box Braids</span><span>KES 2,500</span></div>
-              <div className="mock-item"><span>Gel Nails</span><span>KES 1,200</span></div>
-              <div className="mock-item"><span>Locs Retwist</span><span>KES 800</span></div>
-              <a href={WA_LINK} target="_blank" rel="noreferrer" className="mock-wa-btn">📲 Book on WhatsApp</a>
-            </div>
-          </div>
+        <div className="hero-img-wrap">
+          <img src="/hero.png" alt="MenuMtaa hero" className="hero-img" />
         </div>
       </section>
 
