@@ -2,6 +2,18 @@ import { useState, useEffect } from 'react'
 import './App.css'
 const WA_LINK = 'https://wa.me/254791847766?text=Hi%2C%20I%20want%20my%20menu%20website'
 
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right')
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target) } }),
+      { threshold: 0.15 }
+    )
+    els.forEach(el => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+}
+
 export default function App() {
   const [dark, setDark] = useState(() =>
     window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -10,6 +22,8 @@ export default function App() {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
   }, [dark])
+
+  useReveal()
 
   return (
     <>
@@ -41,7 +55,7 @@ export default function App() {
 
       {/* PROBLEM → SOLUTION */}
       <section className="problem-solution">
-        <div className="problem card">
+        <div className="problem card reveal-left">
           <h2>😩 Sound familiar?</h2>
           <ul>
             <li>"How much is a haircut?"</li>
@@ -51,7 +65,7 @@ export default function App() {
           <p className="tag">You lose clients every day answering the same questions.</p>
         </div>
         <div className="arrow">→</div>
-        <div className="solution card">
+        <div className="solution card reveal-right">
           <h2>✅ We fix that</h2>
           <ul>
             <li>Prices visible instantly</li>
@@ -66,13 +80,13 @@ export default function App() {
       <section className="how">
         <h2 className="section-title">How It Works</h2>
         <div className="how-grid">
-          <div className="how-col">
+          <div className="how-col reveal-left">
             <h3>💇🏾‍♀️ For Salons</h3>
             {['Customer opens your menu link', 'Selects service + sees price', 'Clicks "Book on WhatsApp"'].map((s, i) => (
               <div className="step" key={i}><span className="step-num">{i + 1}</span><p>{s}</p></div>
             ))}
           </div>
-          <div className="how-col">
+          <div className="how-col reveal-right">
             <h3>🍽️ For Restaurants</h3>
             {['Customer scans QR code on table', 'Selects food from digital menu', 'Waiter sees order on phone'].map((s, i) => (
               <div className="step" key={i}><span className="step-num">{i + 1}</span><p>{s}</p></div>
@@ -85,7 +99,7 @@ export default function App() {
       <section className="demos" id="demos">
         <h2 className="section-title">Live Demos — Tap to Try</h2>
         <div className="demo-grid">
-          <div className="demo-card">
+          <div className="demo-card reveal">
             <div className="demo-label">💇🏾‍♀️ Salon Menu</div>
             <div className="demo-items">
               {[['Box Braids', 'KES 2,500'], ['Gel Nails', 'KES 1,200'], ['Locs Retwist', 'KES 800'], ['Facial', 'KES 1,500']].map(([s, p]) => (
@@ -94,7 +108,7 @@ export default function App() {
             </div>
             <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary full">📲 Book on WhatsApp</a>
           </div>
-          <div className="demo-card">
+          <div className="demo-card reveal">
             <div className="demo-label">🍔 Restaurant Menu</div>
             <div className="demo-cat">Breakfast</div>
             <div className="demo-items">
@@ -116,7 +130,7 @@ export default function App() {
       {/* FEATURES */}
       <section className="features">
         <h2 className="section-title">What You Get</h2>
-        <div className="features-grid">
+        <div className="features-grid reveal">
           {[
             ['📱', 'Mobile-friendly design'],
             ['💬', 'WhatsApp booking integration'],
@@ -134,7 +148,7 @@ export default function App() {
       <section className="pricing">
         <h2 className="section-title">Simple Pricing</h2>
         <div className="pricing-grid">
-          <div className="price-card">
+          <div className="price-card reveal">
             <h3>Starter</h3>
             <ul>
               <li>Menu website</li>
@@ -144,7 +158,7 @@ export default function App() {
             <div className="price-tag">KES 7,000 – 9,000</div>
             <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary full">Get Started</a>
           </div>
-          <div className="price-card featured">
+          <div className="price-card featured reveal">
             <div className="badge">Most Popular</div>
             <h3>Pro</h3>
             <ul>
@@ -161,7 +175,7 @@ export default function App() {
       
 
       {/* FINAL CTA */}
-      <section className="final-cta">
+      <section className="final-cta reveal">
         <h2>Ready to Get Your Menu Website?</h2>
         <p>We set you up in 24 hours. Stop losing clients who ask for prices and disappear.</p>
         <div className="cta-row">
