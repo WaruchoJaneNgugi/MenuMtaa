@@ -1,153 +1,166 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import './App.css'
-const WA_LINK = 'https://wa.me/254791847766?text=Hi%2C%20I%20want%20my%20menu%20website'
-
-function getMailto(pkg: 'Starter' | 'Pro') {
-  const subject = `MenuMtaa ${pkg} Package Inquiry`
-  const body = pkg === 'Starter'
-    ? `Hi,\n\nI'm interested in the MenuMtaa Starter Package:\n\n- Menu website\n- WhatsApp booking\n- 1 design\n- Price: KES 7,000 – 9,000\n\nBusiness Name:\nBusiness Type (Salon/Restaurant/Café):\nPhone Number:\n\nThank you!`
-    : `Hi,\n\nI'm interested in the MenuMtaa Pro Package:\n\n- Everything in Starter\n- QR code system\n- Order selection system\n- Price: KES 10,000 – 15,000\n\nBusiness Name:\nBusiness Type (Salon/Restaurant/Café):\nPhone Number:\n\nThank you!`
-  return `mailto:waruchojanen@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-}
-
-function useReveal() {
-  useEffect(() => {
-    const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right')
-    const io = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target) } }),
-      { threshold: 0.15 }
-    )
-    els.forEach(el => io.observe(el))
-    return () => io.disconnect()
-  }, [])
-}
+import { useAppStore } from './store/useAppStore'
+import { useReveal } from './hooks/useReveal'
+import { useWhatsApp } from './hooks/useWhatsApp'
+import {
+  WA_LINK, WA_NUMBER,
+  HOW_STEPS, DEMO_ITEMS, FEATURES,
+  INDUSTRIES, PRICING_PLANS, TESTIMONIALS,
+} from './constants'
 
 export default function App() {
-  const [dark, setDark] = useState(() =>
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-  )
+  const { theme, toggleTheme, cart, addToCart, removeFromCart, clearCart, cartTotal } = useAppStore()
+  const getWhatsApp = useWhatsApp()
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
-  }, [dark])
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
 
   useReveal()
+
+  const cartCount = cart.reduce((s, c) => s + c.qty, 0)
+
+  function buildWAOrder() {
+    const lines = cart.map(c => `• ${c.name} x${c.qty} — ${c.price}`).join('\n')
+    const msg = `Hi! I'd like to order:\n\n${lines}\n\nTotal: KES ${cartTotal().toLocaleString()}`
+    return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`
+  }
 
   return (
     <>
       {/* NAV */}
       <nav>
         <span className="logo">Menu<span>Mtaa</span></span>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <button className="theme-toggle" onClick={() => setDark(d => !d)} aria-label="Toggle theme">
-            {dark ? '☀️' : '🌙'}
+        <div className="nav-right">
+          <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+            {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-          <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-outline">Chat on WhatsApp</a>
+          <a href="#demo" className="btn-outline">View Demo</a>
+          <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary nav-cta">Get Your Menu</a>
         </div>
       </nav>
 
       {/* HERO */}
       <section className="hero">
         <div className="hero-text">
-          <h1>Turn Your Menu Into Sales — Let Customers Book &amp; Order Instantly on WhatsApp</h1>
-          <p className="sub">Beautiful mobile menu websites for salons, cafés &amp; restaurants in Nairobi. Set up in 24 hours.</p>
+          <div className="urgency-badge">⚡ Setup in 24–48 hours</div>
+          <h1>Turn your menu into a QR code — customers scan and order on <span>WhatsApp</span> instantly</h1>
+          <p className="sub">Faster service. More orders. Less waiting. No app needed.</p>
           <div className="cta-row">
-            <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary">Get Your Menu Website</a>
-            <a href="#demos" className="btn-ghost">See Demo ↓</a>
+            <a href="#demo" className="btn-primary">📲 View Demo</a>
+            <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-ghost">Get Your Menu →</a>
           </div>
+          <p className="social-nudge">✅ Trusted by restaurants, salons &amp; cafés across Nairobi</p>
         </div>
         <div className="hero-img-wrap">
-          <img src="/hero.png" alt="MenuMtaa hero" className="hero-img" />
+          <img src="/hero.png" alt="MenuMtaa demo on phone" className="hero-img" />
         </div>
       </section>
 
-      {/* PROBLEM → SOLUTION */}
-      <section className="problem-solution">
-        <div className="problem card reveal-left">
-          <h2>😩 Sound familiar?</h2>
-          <ul>
-            <li>"How much is a haircut?"</li>
-            <li>"Can you send the menu?"</li>
-            <li>"Are you open today?"</li>
-          </ul>
-          <p className="tag">You lose clients every day answering the same questions.</p>
-        </div>
-        <div className="arrow">→</div>
-        <div className="solution card reveal-right">
-          <h2>✅ We fix that</h2>
-          <ul>
-            <li>Prices visible instantly</li>
-            <li>Customers book via WhatsApp</li>
-            <li>Diners select orders before waiter arrives</li>
-          </ul>
-          <p className="tag">One link. Zero confusion. More sales.</p>
+      {/* INDUSTRIES */}
+      <section className="industries">
+        <p className="industries-label">Perfect for</p>
+        <div className="industries-row">
+          {INDUSTRIES.map(({ icon, label }) => (
+            <div className="industry-pill" key={label}>{icon} {label}</div>
+          ))}
         </div>
       </section>
 
       {/* HOW IT WORKS */}
       <section className="how">
         <h2 className="section-title">How It Works</h2>
+        <p className="section-sub">3 steps. No app. No confusion.</p>
         <div className="how-grid">
-          <div className="how-col reveal-left">
-            <h3>💇🏾‍♀️ For Salons</h3>
-            {['Customer opens your menu link', 'Selects service + sees price', 'Clicks "Book on WhatsApp"'].map((s, i) => (
-              <div className="step" key={i}><span className="step-num">{i + 1}</span><p>{s}</p></div>
-            ))}
-          </div>
-          <div className="how-col reveal-right">
-            <h3>🍽️ For Restaurants</h3>
-            {['Customer scans QR code on table', 'Selects food from digital menu', 'Waiter sees order on phone'].map((s, i) => (
-              <div className="step" key={i}><span className="step-num">{i + 1}</span><p>{s}</p></div>
-            ))}
-          </div>
+          {HOW_STEPS.map((s, i) => (
+            <div className="how-card reveal" key={i}>
+              <div className="how-num">{i + 1}</div>
+              <div className="how-icon">{s.icon}</div>
+              <h3>{s.label}</h3>
+              <p>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+        <div className="section-cta">
+          <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary">Get Your Menu Now →</a>
         </div>
       </section>
 
-      {/* DEMOS */}
-      <section className="demos" id="demos">
-        <h2 className="section-title">Live Demos — Tap to Try</h2>
-        <div className="demo-grid">
-          <div className="demo-card reveal">
-            <div className="demo-label">💇🏾‍♀️ Salon Menu</div>
-            <div className="demo-items">
-              {[['Box Braids', 'KES 2,500'], ['Gel Nails', 'KES 1,200'], ['Locs Retwist', 'KES 800'], ['Facial', 'KES 1,500']].map(([s, p]) => (
-                <div className="demo-row" key={s}><span>{s}</span><span className="price">{p}</span></div>
-              ))}
+      {/* LIVE DEMO */}
+      <section className="demo-section" id="demo">
+        <h2 className="section-title">Try a Live Demo</h2>
+        <p className="section-sub">This is exactly what your customers will see. Add items and send a real WhatsApp order.</p>
+        <div className="demo-wrap">
+          <div className="demo-phone">
+            <div className="demo-phone-header">
+              <span className="demo-biz-name">🍽️ Mama Njeri's Kitchen</span>
+              <span className="demo-tag">Demo Menu</span>
             </div>
-            <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary full">📲 Book on WhatsApp</a>
-          </div>
-          <div className="demo-card reveal">
-            <div className="demo-label">🍔 Restaurant Menu</div>
-            <div className="demo-cat">Breakfast</div>
-            <div className="demo-items">
-              {[['Mandazi + Chai', 'KES 150'], ['Full English', 'KES 450']].map(([s, p]) => (
-                <div className="demo-row" key={s}><span>{s}</span><span className="price">{p}</span></div>
-              ))}
+            <div className="demo-items-list">
+              {DEMO_ITEMS.map(item => {
+                const inCart = cart.find(c => c.name === item.name)
+                return (
+                  <div className="demo-item-row" key={item.name}>
+                    <div>
+                      <span className="demo-item-name">{item.name}</span>
+                      <span className="demo-item-price">{item.price}</span>
+                    </div>
+                    <div className="qty-control">
+                      {inCart ? (
+                        <>
+                          <button onClick={() => removeFromCart(item.name)} aria-label="Remove one">−</button>
+                          <span>{inCart.qty}</span>
+                          <button onClick={() => addToCart(item)} aria-label="Add one">+</button>
+                        </>
+                      ) : (
+                        <button className="add-btn" onClick={() => addToCart(item)}>Add</button>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-            <div className="demo-cat">Drinks</div>
-            <div className="demo-items">
-              {[['Fresh Juice', 'KES 200'], ['Smoothie', 'KES 350']].map(([s, p]) => (
-                <div className="demo-row" key={s}><span>{s}</span><span className="price">{p}</span></div>
-              ))}
-            </div>
-            <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary full">🛒 Send Order</a>
+
+            {cartCount > 0 && (
+              <div className="cart-bar">
+                <span>{cartCount} item{cartCount > 1 ? 's' : ''} · KES {cartTotal().toLocaleString()}</span>
+                <div className="cart-actions">
+                  <button className="cart-clear" onClick={clearCart}>Clear</button>
+                  <a href={buildWAOrder()} target="_blank" rel="noreferrer" className="btn-primary cart-order">
+                    💬 Send Order on WhatsApp
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
         </div>
+        <p className="demo-note">👆 This is a real working demo. Your customers get this exact experience.</p>
       </section>
 
       {/* FEATURES */}
       <section className="features">
         <h2 className="section-title">What You Get</h2>
-        <div className="features-grid reveal">
-          {[
-            ['📱', 'Mobile-friendly design'],
-            ['💬', 'WhatsApp booking integration'],
-            ['📷', 'Beautiful menu with images'],
-            ['🔗', 'Custom link for Instagram bio'],
-            ['✏️', 'Easy menu updates'],
-            ['📍', 'QR code for tables'],
-          ].map(([icon, text]) => (
-            <div className="feature-card" key={text}><span className="feat-icon">{icon}</span><p>{text}</p></div>
+        <div className="features-grid">
+          {FEATURES.map(({ icon, text }) => (
+            <div className="feature-card reveal" key={text}>
+              <span className="feat-icon">{icon}</span>
+              <p>{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="proof">
+        <h2 className="section-title">What Clients Say</h2>
+        <div className="proof-grid">
+          {TESTIMONIALS.map(({ quote, name, biz }) => (
+            <div className="proof-card reveal" key={name}>
+              <p className="quote">"{quote}"</p>
+              <p className="biz-name">— {name}</p>
+              <p className="biz">{biz}</p>
+            </div>
           ))}
         </div>
       </section>
@@ -155,41 +168,34 @@ export default function App() {
       {/* PRICING */}
       <section className="pricing">
         <h2 className="section-title">Simple Pricing</h2>
+        <p className="section-sub">No hidden fees. Pay once, own it forever.</p>
         <div className="pricing-grid">
-          <div className="price-card reveal">
-            <h3>Starter</h3>
-            <ul>
-              <li>Menu website</li>
-              <li>WhatsApp booking</li>
-              <li>1 design</li>
-            </ul>
-            <div className="price-tag">KES 7,000 – 9,000</div>
-            <a href={getMailto('Starter')} className="btn-primary full">✉️ Get Started</a>
-          </div>
-          <div className="price-card featured reveal">
-            <div className="badge">Most Popular</div>
-            <h3>Pro</h3>
-            <ul>
-              <li>Everything in Starter</li>
-              <li>QR code system</li>
-              <li>Order selection system</li>
-            </ul>
-            <div className="price-tag">KES 10,000 – 15,000</div>
-            <a href={getMailto('Pro')} className="btn-primary full">✉️ Get Started</a>
-          </div>
+          {PRICING_PLANS.map(plan => (
+            <div className={`price-card reveal${plan.featured ? ' featured' : ''}`} key={plan.id}>
+              {plan.featured && <div className="badge">Most Popular</div>}
+              <h3>{plan.name}</h3>
+              <div className="price-tag">{plan.price}</div>
+              <div className="price-sub">{plan.sub}</div>
+              <div className="price-total"></div>
+              <ul>
+                {plan.features.map((f: string) => <li key={f}>{f}</li>)}
+              </ul>
+              <a href={getWhatsApp(plan.id, plan.price)} target="_blank" rel="noreferrer" className="btn-primary full">Get Started →</a>
+            </div>
+          ))}
         </div>
+        <p className="pricing-note">🔒 Setup in 24–48 hours · Free QR code included · Cancel anytime</p>
       </section>
-
-      
 
       {/* FINAL CTA */}
       <section className="final-cta reveal">
-        <h2>Ready to Get Your Menu Website?</h2>
-        <p>We set you up in 24 hours. Stop losing clients who ask for prices and disappear.</p>
+        <h2>Ready to get more orders?</h2>
+        <p>Stop losing customers who ask for prices and disappear. Get your menu live today.</p>
         <div className="cta-row">
           <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary">💬 Chat on WhatsApp</a>
-          <a href="#demos" className="btn-ghost">View Demo ↓</a>
+          <a href="#demo" className="btn-ghost">Try Demo First ↓</a>
         </div>
+        <p className="urgency">⚡ Setup in 24–48 hours · Limited free QR setup for first clients</p>
       </section>
 
       <footer>
