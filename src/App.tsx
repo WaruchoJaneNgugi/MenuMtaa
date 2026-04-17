@@ -201,6 +201,7 @@ export default function App() {
       <footer>
         <span>© 2026 MenuMtaa · Nairobi, Kenya</span>
       </footer>
+
     </>
   )
 }
