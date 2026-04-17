@@ -5,7 +5,7 @@ import { useReveal } from './hooks/useReveal'
 import { useWhatsApp } from './hooks/useWhatsApp'
 import {
   WA_LINK, WA_NUMBER,
-  HOW_STEPS, DEMO_ITEMS, FEATURES,
+  HOW_STEPS, AFTER_PAY_STEPS, DEMO_ITEMS, FEATURES,
   INDUSTRIES, PRICING_PLANS, TESTIMONIALS,
 } from './constants'
 
@@ -46,9 +46,10 @@ export default function App() {
         <div className="hero-text">
           <div className="urgency-badge">⚡ Setup in 24–48 hours</div>
           <h1>Turn your menu into a QR code — customers scan and order on <span>WhatsApp</span> instantly</h1>
-          <p className="sub">Faster service. More orders. Less waiting. No app needed.</p>
+          <p className="sub">Every day without a menu link, you're losing customers who ask for prices and never come back.</p>
           <div className="cta-row">
             <a href="#demo" className="btn-primary">📲 View Demo</a>
+            <a href="#pricing" className="btn-ghost">💳 View Subscriptions</a>
             <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-ghost">Get Your Menu →</a>
           </div>
           <p className="social-nudge">✅ Trusted by restaurants, salons &amp; cafés across Nairobi</p>
@@ -85,6 +86,23 @@ export default function App() {
         <div className="section-cta">
           <a href={WA_LINK} target="_blank" rel="noreferrer" className="btn-primary">Get Your Menu Now →</a>
         </div>
+      </section>
+
+      {/* AFTER YOU PAY */}
+      <section className="how">
+        <h2 className="section-title">What Happens After You Pay</h2>
+        <p className="section-sub">No guessing. Here's exactly what we do.</p>
+        <div className="how-grid">
+          {AFTER_PAY_STEPS.map((s, i) => (
+            <div className="how-card reveal" key={i}>
+              <div className="how-num">{i + 1}</div>
+              <div className="how-icon">{s.icon}</div>
+              <h3>{s.label}</h3>
+              <p>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p className="section-sub" style={{ marginTop: '1rem' }}>🛡️ <strong>Live in 48 hours — or full refund. No questions asked.</strong></p>
       </section>
 
       {/* LIVE DEMO */}
@@ -166,7 +184,7 @@ export default function App() {
       </section>
 
       {/* PRICING */}
-      <section className="pricing">
+      <section className="pricing" id="pricing">
         <h2 className="section-title">Simple Pricing</h2>
         <p className="section-sub">No hidden fees. Pay once, own it forever.</p>
         <div className="pricing-grid">
@@ -185,6 +203,10 @@ export default function App() {
           ))}
         </div>
         <p className="pricing-note">🔒 Setup in 24–48 hours · Free QR code included · Cancel anytime</p>
+        <div className="roi-box reveal">
+          <p>📊 <strong>The math:</strong> If your menu brings in just 2 extra orders a week at KES 500 avg — that's <strong>KES 4,000/month</strong>. The Starter plan pays for itself in <strong>under 2 months.</strong></p>
+        </div>
+        <p className="scarcity-note">🔥 Only taking <strong>5 new clients this week</strong> to ensure quality setup. Slots filling fast.</p>
       </section>
 
       {/* FINAL CTA */}
@@ -200,6 +222,9 @@ export default function App() {
 
       <footer>
         <span>© 2026 MenuMtaa · Nairobi, Kenya</span>
+        <span className="footer-builder">
+          Built by Jane Ngugi · <a href={WA_LINK} target="_blank" rel="noreferrer">💬 WhatsApp me directly</a>
+        </span>
       </footer>
 
     </>

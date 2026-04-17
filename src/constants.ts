@@ -9,6 +9,12 @@ export const HOW_STEPS: Step[] = [
   { icon: '💬', label: 'Order sent to WhatsApp', desc: 'One tap and the full order lands in your WhatsApp instantly.' },
 ]
 
+export const AFTER_PAY_STEPS: Step[] = [
+  { icon: '💳', label: 'You pay & message us', desc: 'Send your payment and business details on WhatsApp.' },
+  { icon: '🛠️', label: 'We build your menu', desc: 'We set up your full menu website — no work needed from you.' },
+  { icon: '🔗', label: 'You go live in 48hrs', desc: 'Get your custom link, QR code, and you\'re ready to take orders.' },
+]
+
 export const DEMO_ITEMS: MenuItem[] = [
   { name: 'Nyama Choma (500g)', price: 'KES 850', priceNum: 850 },
   { name: 'Ugali + Sukuma', price: 'KES 250', priceNum: 250 },

@@ -443,3 +443,36 @@ footer {
 .reveal:nth-child(4) { transition-delay: 0.24s; }
 .reveal:nth-child(5) { transition-delay: 0.32s; }
 .reveal:nth-child(6) { transition-delay: 0.40s; }
+
+/* ── ROI BOX ── */
+.roi-box {
+  margin: 1.5rem auto 0;
+  max-width: 600px;
+  background: var(--card);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 1rem 1.5rem;
+  text-align: center;
+  color: var(--text);
+  line-height: 1.6;
+}
+.roi-box strong { color: var(--gold); }
+
+/* ── SCARCITY NOTE ── */
+.scarcity-note {
+  text-align: center;
+  margin-top: 1rem;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.scarcity-note strong { color: var(--gold); }
+
+/* ── FOOTER BUILDER ── */
+.footer-builder {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.footer-builder a { color: var(--gold); text-decoration: none; }
+.footer-builder a:hover { text-decoration: underline; }
