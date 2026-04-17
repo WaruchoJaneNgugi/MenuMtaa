@@ -1,6 +1,6 @@
 import type { Feature, Industry, MenuItem, PricingPlan, Step, Testimonial } from './types'
 
-export const WA_LINK = 'https://wa.me/254791847766?text=Hi%2C%20I%20want%20my%20menu%20website'
+export const WA_LINK = `https://wa.me/254791847766?text=${encodeURIComponent('Hi! I want my menu website.\n\nPackage I\'m interested in (Starter / Business / Premium):\nBusiness Name:\nBusiness Type (Restaurant/Salon/Café):\nPhone Number:')}`
 export const WA_NUMBER = '254791847766'
 
 export const HOW_STEPS: Step[] = [
